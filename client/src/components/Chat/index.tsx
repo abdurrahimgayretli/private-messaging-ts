@@ -2,9 +2,11 @@ import socket from "../../socket";
 import User from "../User";
 import MessagePanel from "../MessagePanel";
 
-import { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./styles.sass";
+import { useUser } from "../../context";
+import { IMyPropsType } from "../../@types/user";
 
 interface IMyProps {
   user: {
@@ -19,7 +21,7 @@ interface IMyProps {
 }
 
 export default function Chat() {
-  const [users, setUsers] = useState<IMyProps["user"][]>([]);
+  const { users, setUsers } = useUser() as IMyPropsType;
   const [selectedUser, setSelectedUser] = useState<IMyProps["user"]>();
 
   const onSelectUser = (user: IMyProps["user"]) => {
@@ -41,7 +43,7 @@ export default function Chat() {
 
   useEffect(() => {
     socket.on("connect", () => {
-      users.forEach((user: IMyProps["user"]) => {
+      users.forEach((user: any) => {
         if (user.self) {
           user.connected = true;
         }
@@ -49,7 +51,7 @@ export default function Chat() {
     });
 
     socket.on("disconnect", () => {
-      users.forEach((user: IMyProps["user"]) => {
+      users.forEach((user: any) => {
         if (user.self) {
           user.connected = false;
         }
@@ -79,7 +81,7 @@ export default function Chat() {
         });
       });
       // put the current user first, and sort by username
-      users.sort((a: IMyProps["user"], b: IMyProps["user"]) => {
+      users.sort((a: any, b: any) => {
         if (a.self) return -1;
         if (b.self) return 1;
         if (a.username < b.username) return -1;
@@ -123,7 +125,7 @@ export default function Chat() {
         const user = users[i];
         const fromSelf = socket.id === from;
         if (user.userID === (fromSelf ? to : from)) {
-          user.messages.push({
+          user.messages?.push({
             content,
             fromSelf,
           });
@@ -153,7 +155,7 @@ export default function Chat() {
   return (
     <div>
       <div className="left-panel">
-        {users.map((user: IMyProps["user"], index: number) => (
+        {users.map((user: any, index: number) => (
           <User
             key={index}
             user={user!}

@@ -37,7 +37,7 @@ export default function MessagePanel(props: IMyProps) {
     },
   });
 
-  useEffect(() => {}, [formik.values.input,props]);
+  useEffect(() => {}, [formik.values.input, props]);
 
   const isValid: boolean = Boolean(formik.values.input.length > 0);
 

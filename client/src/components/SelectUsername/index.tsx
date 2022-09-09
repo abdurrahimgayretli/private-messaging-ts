@@ -1,5 +1,6 @@
 import { Button, FormControl, Input } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 
 import "./styles.sass";
 
@@ -23,6 +24,7 @@ export default function SelectUsername(props: IMyProps) {
   const buttonValid = () => {
     return formik.values.username.length < 2 ? true : false;
   };
+
 
   return (
     <div className="select-username">

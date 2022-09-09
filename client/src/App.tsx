@@ -3,6 +3,7 @@ import SelectUsername from "./components/SelectUsername";
 import Chat from "./components/Chat";
 import socket from "./socket";
 import { useEffect, useState } from "react";
+import { UserContextProvider } from "./context";
 
 function App() {
   const [usernameAlreadySelected, setUsernameAlreadySelected] = useState(false);
@@ -45,13 +46,15 @@ function App() {
     []
   );
   return (
-    <div id="app">
-      {!usernameAlreadySelected ? (
-        <SelectUsername input={onUsernameSelection} />
-      ) : (
-        <Chat />
-      )}
-    </div>
+    <UserContextProvider>
+      <div id="app">
+        {!usernameAlreadySelected ? (
+          <SelectUsername input={onUsernameSelection} />
+        ) : (
+          <Chat />
+        )}
+      </div>
+    </UserContextProvider>
   );
 }
 
